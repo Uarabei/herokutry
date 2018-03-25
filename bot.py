@@ -1,25 +1,25 @@
-# -*- coding: utf-8 -*-
+import requests
 import os
 import telebot
-# import some_api_lib
-# import ...
-
-# Example of your code beginning
-#           Config vars
-token = os.environ['TELEGRAM_TOKEN']
-#some_api_token = os.environ['SOME_API_TOKEN']
-#             ...
+from decoder import *
 
 
-#       Your bot code below
-# bot = telebot.TeleBot(token)
-# some_api = some_api_lib.connect(some_api_token)
-#              ...
-bot = telebot.TeleBot(token)
+TOKEN = os.environ['TELEGRAM_TOKEN']
+CLOUD_API = os.environ['CLOUD_TOKEN']
+
+bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(content_types=["text"])
-def repeat_all_messages(message): # Название функции не играет никакой роли, в принципе
-    bot.send_message(message.chat.id, message.text)
+def repeat_all_messages(message):
+    if 'найди' or 'поиск' in message:
+        bot.send_message(message.chat.id, 'Начинаю парсинг клиентов по запросу')
+    else:
+        bot.send_message(message.chat.id, message.text)
+
+@bot.message_handler(content_types=['voice'])
+def voice_processing(message):
+    file_info = bot.get_file(message.voice.file_id)
+    file = requests.get('https://api.telegram.org/file/bot{0}/{1}'.format(TOKEN, file_info.file_path))
 
 if __name__ == '__main__':
      bot.polling(none_stop=True)
