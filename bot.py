@@ -9,12 +9,21 @@ CLOUD_API = os.environ['CLOUD_TOKEN']
 
 bot = telebot.TeleBot(TOKEN)
 
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+	bot.reply_to(message, "Привет, епта, я Гарик!")
+
 @bot.message_handler(content_types=["text"])
 def repeat_all_messages(message):
-    if 'найди' or 'поиск' in message:
-        bot.send_message(message.chat.id, 'Начинаю парсинг клиентов по запросу')
-    else:
-        bot.send_message(message.chat.id, message.text)
+    bot.send_message(message.chat.id, message.text)
+
+@bot.message_handler(content_types=['document', 'audio'])
+def handle_docs_audio(message):
+	bot.send_message(message.chat.id, "Обработка документов и звука, ага блять!")
+
+@bot.message_handler(regexp="Поиск")
+def handle_message(message):
+    bot.send_message(message.chat_id, '{} данных в городе {}, по количеству {} запросов'.format('Поиск', 'Алматы', '10'))
 
 @bot.message_handler(content_types=['voice'])
 def voice_processing(message):

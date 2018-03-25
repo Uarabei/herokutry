@@ -23,7 +23,7 @@ def convert_to_pcm16b16000r(in_filename=None, in_bytes=None):
 
         # Запрос в командную строку для обращения к FFmpeg
         command = [
-            r'.\bin\ffmpeg.exe',  # путь до ffmpeg.exe
+            r'ffmpeg.exe',  # путь до ffmpeg.exe
             '-i', in_filename,
             '-f', 's16le',
             '-acodec', 'pcm_s16le',
