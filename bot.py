@@ -15,7 +15,7 @@ def send_welcome(message):
 
 @bot.message_handler(regexp="Поиск")
 def handle_message(message):
-    bot.send_message(message.chat_id, '{} данных в городе {}, по количеству {} запросов'.format('Поиск', 'Алматы', '10'))
+    bot.send_message(message, '{} данных в городе {}, по количеству {} запросов'.format(message, 'Алматы', '10'))
 
 @bot.message_handler(content_types=["text"])
 def repeat_all_messages(message):
